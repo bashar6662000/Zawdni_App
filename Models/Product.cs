@@ -1,4 +1,6 @@
-﻿namespace Zawdni.api.Models
+﻿using Zawdni.Models;
+
+namespace Zawdni.api.Models
 {
     public class Product
     {
@@ -6,6 +8,9 @@
         public required string Name { get; set; }
         public int Quntity { get; set; }
         public string Description { get; set; } = string.Empty;
-        public double Price { get; set; } = 0.00; 
+        public double Price { get; set; } = 0.00;
+
+        public List<OrderProduct> orderProducts { get; set; }
+
     }
 }

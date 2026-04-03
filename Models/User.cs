@@ -1,4 +1,6 @@
-﻿namespace Zawdni.api.Models
+﻿using Zawdni.Models;
+
+namespace Zawdni.api.Models
 {
     public class User
     {
@@ -10,5 +12,6 @@
         public required string Role { get; set; }
         public required string ClinicName { get; set; } 
         public required string ClinicAddress {  get; set; } 
+        public List<Order> orders { get; set; }
     }
 }
