@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Zawdni.api.Models;
+using Zawdni.Models;
 
 
 namespace Zawdni.api.Data
@@ -11,6 +12,7 @@ namespace Zawdni.api.Data
         {
 
         }
-        public DbSet<Product> products { get; set; }    
+        public DbSet<Product> products { get; set; }   
+        public DbSet<Order > orders { get; set; }
     }
 }

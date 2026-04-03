@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Zawdni.api.Data;
 using Zawdni.api.Models;
 using Zawdni.Models.DTO;
@@ -87,12 +86,17 @@ namespace Zawdni.Controllers
         }
 
 
-
+        /// <summary>
+        /// to update product info
+        /// </summary>
+        /// <param name="Id">the ID of the required product</param>
+        /// <param name="productDTO">for more security </param>
+        /// <returns></returns>
         [HttpPost("EditProduct")]
-        public ActionResult EditProduct(int id, [FromBody] ProductDTO productDTO )
+        public ActionResult EditProduct(int Id, [FromBody] ProductDTO productDTO )
         {
 
-            var ProductInDB=_dbContext.products.Find(id);
+            var ProductInDB=_dbContext.products.Find(Id);
 
             if (ProductInDB == null)
                 return BadRequest();
@@ -109,11 +113,15 @@ namespace Zawdni.Controllers
             return Ok();
         }
 
-
+        /// <summary>
+        /// to remove product from the database
+        /// </summary>
+        /// <param name="Id">the ID of the required product</param>
+        /// <returns></returns>
         [HttpDelete("DeleteProduct")]
-        public ActionResult DeleteProduct(int id)
+        public ActionResult DeleteProduct(int Id)
         {
-            var product = _dbContext.products.Find( id);
+            var product = _dbContext.products.Find(Id);
             if (product == null)
                 return BadRequest("No such a user");
             _dbContext.products.Remove(product);
@@ -125,3 +133,4 @@ namespace Zawdni.Controllers
        
     }
 }
+// for any question please send me a message via my email :bashar66629@gmail.com
