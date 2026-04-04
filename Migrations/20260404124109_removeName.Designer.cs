@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zawdni.api.Data;
 
@@ -11,9 +12,11 @@ using Zawdni.api.Data;
 namespace Zawdni.Migrations
 {
     [DbContext(typeof(ZawdniDbContext))]
-    partial class ZawdniDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260404124109_removeName")]
+    partial class removeName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +41,6 @@ namespace Zawdni.Migrations
 
                     b.Property<bool>("State")
                         .HasColumnType("bit");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");

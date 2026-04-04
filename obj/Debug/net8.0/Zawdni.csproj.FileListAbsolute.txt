@@ -145,3 +145,4 @@ C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\refint\Zawdni.dll
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.pdb
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.genruntimeconfig.cache
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\ref\Zawdni.dll
+C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.sourcelink.json

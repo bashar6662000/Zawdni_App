@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Zawdni.api.Data;
 using Zawdni.api.Models;
+using Zawdni.Migrations;
 using Zawdni.Models;
 using Zawdni.Models.DTO;
 namespace Zawdni.Controllers
@@ -32,6 +33,11 @@ namespace Zawdni.Controllers
             var orders= _dbContext.orders
                 .Skip((PageNumber-1)*PageSize)
                 .Take(PageSize)
+                .Select(o=> new OrderDTO { 
+                    Id=o.Id,
+                    OrderDate=o.OrderDate,
+                    DeliveryDate=o.DeliveryDate,
+                State=o.State})
                 .ToList();
 
             var result = new
@@ -52,10 +58,10 @@ namespace Zawdni.Controllers
         [HttpGet("OrderDetails/{Id}")]
         public IActionResult GetOrderDetails(int Id)
         {
-            if(Id.Equals(null))
+            var order = _dbContext.orders.Find(Id);
+            if(order==null)
                 return NotFound("No order");
 
-            var order = _dbContext.orders.Find(Id);
             return Ok(order);
 
         }
@@ -67,13 +73,33 @@ namespace Zawdni.Controllers
         [HttpPost("AddNewOrder")]
         public IActionResult NewOrder([FromBody] OrderDTO orderDTO)
         {
-            var order = new Order
+            var OrderInDB = new Order
             {
-                Name = orderDTO.Name,
                 State = orderDTO.State,
+                OrderDate = orderDTO.OrderDate,
+                DeliveryDate = orderDTO.DeliveryDate,
+                UserID = orderDTO.UserID,
+                orderProducts = new List<OrderProduct>()
             };
+            if (orderDTO.Products!=null)
 
-            _dbContext.orders.Add(order);
+                foreach(var item in orderDTO.Products)
+                {
+                    OrderInDB.orderProducts.Add(new OrderProduct
+                    {
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity,
+                        UnitPrice = item.UnitPrice,
+                        
+                    }
+                   
+                    );
+                    OrderInDB.Total =+ item.UnitPrice;
+                   
+                }
+            _dbContext.orders.Add(OrderInDB);
+
+            _dbContext.SaveChanges();
             return Ok("Order has been added ");
         }
 
@@ -89,8 +115,10 @@ namespace Zawdni.Controllers
 
             if (OrderinDB == null)
                 return NotFound();
-            OrderinDB.Name=orderDTO.Name;
+           OrderinDB.OrderDate=orderDTO.OrderDate;
+            OrderinDB.DeliveryDate=orderDTO.DeliveryDate;
             OrderinDB.State=orderDTO.State;
+            _dbContext.SaveChanges();
             return Ok("OrderUpdated");
         }
 
@@ -105,6 +133,7 @@ namespace Zawdni.Controllers
             if(Order==null)
                 return NotFound("order not found");
             _dbContext.orders.Remove(Order);
+            _dbContext.SaveChanges();
             return Ok("Order Deleted");
         }
     }

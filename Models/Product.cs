@@ -4,11 +4,11 @@ namespace Zawdni.api.Models
 {
     public class Product
     {
-        public required int Id { get; set; } 
+        public  int Id { get; set; } 
         public required string Name { get; set; }
         public int Quntity { get; set; }
         public string Description { get; set; } = string.Empty;
-        public double Price { get; set; } = 0.00;
+        public decimal Price { get; set; } = 0;
 
         public List<OrderProduct> orderProducts { get; set; }
 

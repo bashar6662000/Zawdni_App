@@ -28,8 +28,15 @@ namespace Zawdni.Controllers
             var Products = _dbContext.products
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
+                .Select(p=> new ProductDTO
+                { Id=p.Id,
+                Name=p.Name,
+                Price=p.Price,
+                Quntity=p.Quntity,
+                Description=p.Description,
+                })
                 .ToList();
-
+            
             var result = new
             {
                 TotalCount = total,
@@ -72,7 +79,6 @@ namespace Zawdni.Controllers
 
             var Product = new Product
             {
-                Id = ProductDTO.Id,
                 Name = ProductDTO.Name,
                 Price = ProductDTO.Price,
                 Quntity = ProductDTO.Quntity,
@@ -92,7 +98,7 @@ namespace Zawdni.Controllers
         /// <param name="Id">the ID of the required product</param>
         /// <param name="productDTO">for more security </param>
         /// <returns></returns>
-        [HttpPost("EditProduct")]
+        [HttpPut("EditProduct")]
         public ActionResult EditProduct(int Id, [FromBody] ProductDTO productDTO )
         {
 
@@ -123,7 +129,7 @@ namespace Zawdni.Controllers
         {
             var product = _dbContext.products.Find(Id);
             if (product == null)
-                return BadRequest("No such a user");
+                return BadRequest("No such a product");
             _dbContext.products.Remove(product);
             _dbContext.SaveChanges();
 
