@@ -6,12 +6,12 @@ namespace Zawdni.api.Models
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public required string Email { get; set; }
+        public  string Email { get; set; } = string.Empty;
         public required string Password { get; set; }
-        public required string PhoneNumber { get; set; } 
-        public required string Role { get; set; }
-        public required string ClinicName { get; set; } 
-        public required string ClinicAddress {  get; set; } 
+        public  string PhoneNumber { get; set; } =string.Empty;
+        public string Role { get; set; } = "Doctor";
+        public string ClinicName { get; set; } = "N/A";
+        public string ClinicAddress { get; set; } = "N/A";
         public List<Order> orders { get; set; }
     }
 }

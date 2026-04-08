@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Zawdni.api.Data;
 using Zawdni.api.Models;
-using Zawdni.Migrations;
 using Zawdni.Models;
 using Zawdni.Models.DTO;
+
 namespace Zawdni.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-
-    
     public class OrderController : ControllerBase
     {
-         private readonly ZawdniDbContext _dbContext;
+        private readonly ZawdniDbContext _dbContext;
 
-        public OrderController(ZawdniDbContext zawdniDbContext) 
+        public OrderController(ZawdniDbContext zawdniDbContext)
         {
             _dbContext = zawdniDbContext;
         }
@@ -22,118 +22,249 @@ namespace Zawdni.Controllers
         /// <summary>
         /// return all orders but paginated so the server dont boom
         /// </summary>
-        /// <param name="PageNumber"></param>
-        /// <param name="PageSize"></param>
-        /// <returns></returns>
         [HttpGet("Orders")]
-
-        public IActionResult GetAll(int PageNumber=1,int PageSize=10)
+        public IActionResult GetAll(int PageNumber = 1, int PageSize = 10)
         {
-            var OrderCount=_dbContext.orders.Count();
-            var orders= _dbContext.orders
-                .Skip((PageNumber-1)*PageSize)
+            var OrderCount = _dbContext.orders.Count();
+            var orders = _dbContext.orders
+                .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
-                .Select(o=> new OrderDTO { 
-                    Id=o.Id,
-                    OrderDate=o.OrderDate,
-                    DeliveryDate=o.DeliveryDate,
-                State=o.State})
+                .Select(o => new OrderDTO
+                {
+                    Id = o.Id,
+                    OrderDate = o.OrderDate,
+                    DeliveryDate = o.DeliveryDate,
+                    State = o.State
+                })
                 .ToList();
 
             var result = new
             {
                 orders = orders,
                 ordersCount = OrderCount,
-                pageSiaze = PageSize,
+                pageSize = PageSize,
                 pageNumber = PageNumber
             };
             return Ok(result);
         }
 
-       /// <summary>
-       /// order Deatils
-       /// </summary>
-       /// <param name="Id"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// order details
+        /// </summary>
         [HttpGet("OrderDetails/{Id}")]
-        public IActionResult GetOrderDetails(int Id)
+        public IActionResult OrderDetails(int Id)
         {
-            var order = _dbContext.orders.Find(Id);
-            if(order==null)
-                return NotFound("No order");
+            var order = _dbContext.orders
+                .Include(o => o.orderProducts)
+                    .ThenInclude(op => op.product)
+                .FirstOrDefault(o => o.Id == Id);
 
-            return Ok(order);
+            if (order == null)
+                return NotFound("No order found");
 
+            var result = new OrderDTO
+            {
+                Id = order.Id,
+                State = order.State,
+                OrderDate = order.OrderDate,
+                DeliveryDate = order.DeliveryDate,
+                Total = order.Total,
+                UserID = order.UserID,
+                Products = order.orderProducts.Select(op => new OrderProductDTO
+                {
+                    ProductId = op.ProductId,
+                    Quantity = op.Quantity,
+                    UnitPrice = op.UnitPrice
+                }).ToList()
+            };
+
+            return Ok(result);
         }
 
         /// <summary>
-        /// just adding a new order 
+        /// adding a new order
         /// </summary>
-        /// <param name="value"></param>
         [HttpPost("AddNewOrder")]
         public IActionResult NewOrder([FromBody] OrderDTO orderDTO)
         {
-            var OrderInDB = new Order
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var orderInDB = new Order
             {
-                State = orderDTO.State,
-                OrderDate = orderDTO.OrderDate,
-                DeliveryDate = orderDTO.DeliveryDate,
-                UserID = orderDTO.UserID,
-                orderProducts = new List<OrderProduct>()
+                State = false,
+                OrderDate = DateTime.Now,
+                DeliveryDate = null,
+                UserID = int.Parse(userIdClaim),
+                Total = 0
             };
-            if (orderDTO.Products!=null)
 
-                foreach(var item in orderDTO.Products)
+            _dbContext.orders.Add(orderInDB);
+            _dbContext.SaveChanges();
+
+            decimal total = 0;
+            foreach (var item in orderDTO.Products)
+            {
+                var product = _dbContext.products.Find(item.ProductId);
+                if (product == null)
+                    return NotFound($"Product {item.ProductId} not found");
+
+                _dbContext.orderProducts.Add(new OrderProduct
                 {
-                    OrderInDB.orderProducts.Add(new OrderProduct
-                    {
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity,
-                        UnitPrice = item.UnitPrice,
-                        
-                    }
-                   
-                    );
-                    OrderInDB.Total =+ item.UnitPrice;
-                   
-                }
-            _dbContext.orders.Add(OrderInDB);
+                    OrderId = orderInDB.Id,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitPrice = product.Price
+                });
 
+                total += product.Price * item.Quantity;
+            }
+
+            orderInDB.Total = total;
             _dbContext.SaveChanges();
-            return Ok("Order has been added ");
+
+            return Ok("Order has been added successfully");
         }
 
         /// <summary>
-        /// updating order info 
+        /// confirm order and set delivery date
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
-        [HttpPost("UpdateOrder/{id}")]
-        public IActionResult UpdateOrder(int id, [FromBody] OrderDTO orderDTO)
+        [HttpPut("ConfirmOrder/{id}")]
+        public IActionResult ConfirmOrder(int id)
         {
-            var OrderinDB=_dbContext.orders.Find(id);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
 
-            if (OrderinDB == null)
+            var order = _dbContext.orders.Find(id);
+            if (order == null)
                 return NotFound();
-           OrderinDB.OrderDate=orderDTO.OrderDate;
-            OrderinDB.DeliveryDate=orderDTO.DeliveryDate;
-            OrderinDB.State=orderDTO.State;
+
+            if (order.UserID != int.Parse(userIdClaim))
+                return Forbid();
+
+            order.State = true;
+            order.DeliveryDate = DateTime.Now;
             _dbContext.SaveChanges();
-            return Ok("OrderUpdated");
+
+            return Ok("Order has been confirmed");
         }
 
         /// <summary>
-        /// delting order 
+        /// add a product to an existing order
         /// </summary>
-        /// <param name="id"></param>
+        [HttpPost("AddProductToOrder/{orderId}")]
+        public IActionResult AddProduct(int orderId, [FromBody] OrderProductDTO item)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var order = _dbContext.orders.Find(orderId);
+            if (order == null)
+                return NotFound("Order not found");
+
+            if (order.UserID != int.Parse(userIdClaim))
+                return Forbid();
+
+            var product = _dbContext.products.Find(item.ProductId);
+            if (product == null)
+                return NotFound($"Product {item.ProductId} not found");
+
+            _dbContext.orderProducts.Add(new OrderProduct
+            {
+                OrderId = orderId,
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                UnitPrice = product.Price
+            });
+
+            order.Total += product.Price * item.Quantity;
+            _dbContext.SaveChanges();
+
+            return Ok("Product added");
+        }
+
+        /// <summary>
+        /// remove a product from an order
+        /// </summary>
+        [HttpDelete("RemoveProductFromOrder/{orderId}/{productId}")]
+        public IActionResult RemoveProduct(int orderId, int productId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var order = _dbContext.orders.Find(orderId);
+            if (order == null)
+                return NotFound("Order not found");
+
+            if (order.UserID != int.Parse(userIdClaim))
+                return Forbid();
+
+            var orderProduct = _dbContext.orderProducts
+                .FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+            if (orderProduct == null)
+                return NotFound("Product not in order");
+
+            order.Total -= orderProduct.UnitPrice * orderProduct.Quantity;
+            _dbContext.orderProducts.Remove(orderProduct);
+            _dbContext.SaveChanges();
+
+            return Ok("Product removed");
+        }
+
+        /// <summary>
+        /// update quantity of a product in an order
+        /// </summary>
+        [HttpPut("UpdateProductQuantity/{orderId}/{productId}")]
+        public IActionResult UpdateQuantity(int orderId, int productId, [FromBody] int newQuantity)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var order = _dbContext.orders.Find(orderId);
+            if (order == null)
+                return NotFound("Order not found");
+
+            if (order.UserID != int.Parse(userIdClaim))
+                return Forbid();
+
+            var orderProduct = _dbContext.orderProducts
+                .FirstOrDefault(op => op.OrderId == orderId && op.ProductId == productId);
+            if (orderProduct == null)
+                return NotFound("Product not in order");
+
+            order.Total -= orderProduct.UnitPrice * orderProduct.Quantity;
+            order.Total += orderProduct.UnitPrice * newQuantity;
+            orderProduct.Quantity = newQuantity;
+            _dbContext.SaveChanges();
+
+            return Ok("Quantity updated");
+        }
+
+        /// <summary>
+        /// deleting order
+        /// </summary>
         [HttpDelete("DeleteOrder/{id}")]
         public IActionResult DeleteOrder(int id)
         {
-            var Order= _dbContext.orders.Find(id);
-            if(Order==null)
-                return NotFound("order not found");
-            _dbContext.orders.Remove(Order);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            var order = _dbContext.orders.Find(id);
+            if (order == null)
+                return NotFound("Order not found");
+
+            if (order.UserID != int.Parse(userIdClaim))
+                return Forbid();
+
+            _dbContext.orders.Remove(order);
             _dbContext.SaveChanges();
+
             return Ok("Order Deleted");
         }
     }

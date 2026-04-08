@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Zawdni.api.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Zawdni.api.Data;
+using Zawdni.Services;
 namespace Zawdni
 {
     public class Program
@@ -22,6 +24,7 @@ namespace Zawdni
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -46,7 +49,8 @@ namespace Zawdni
             // Add services to the container.
 
             builder.Services.AddControllers();
-
+            builder.Services.AddScoped<TokenService>(); // for jwt 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); //for jwt key name to be easier to read
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
