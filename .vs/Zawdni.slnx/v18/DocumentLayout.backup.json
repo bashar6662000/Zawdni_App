@@ -1,122 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\HP\\source\\repos\\Zawdni\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|c:\\users\\hp\\source\\repos\\zawdni\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|solutionrelative:controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|c:\\users\\hp\\source\\repos\\zawdni\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|solutionrelative:models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|c:\\users\\hp\\source\\repos\\zawdni\\models\\dto\\orderproductdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|solutionrelative:models\\dto\\orderproductdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|c:\\users\\hp\\source\\repos\\zawdni\\models\\orderproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|solutionrelative:models\\orderproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|c:\\users\\hp\\source\\repos\\zawdni\\models\\dto\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|solutionrelative:models\\dto\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|c:\\users\\hp\\source\\repos\\zawdni\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F067ABF9-4B74-0EA4-3695-667FA8137731}|Zawdni.csproj|solutionrelative:models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 5,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OrderProductDTO.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\DTO\\OrderProductDTO.cs",
-              "RelativeDocumentMoniker": "Models\\DTO\\OrderProductDTO.cs",
-              "ToolTip": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\DTO\\OrderProductDTO.cs",
-              "RelativeToolTip": "Models\\DTO\\OrderProductDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T03:32:13.226Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ProductDTO.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\DTO\\ProductDTO.cs",
-              "RelativeDocumentMoniker": "Models\\DTO\\ProductDTO.cs",
-              "ToolTip": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\DTO\\ProductDTO.cs",
-              "RelativeToolTip": "Models\\DTO\\ProductDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T03:32:05.104Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "OrderProduct.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\OrderProduct.cs",
-              "RelativeDocumentMoniker": "Models\\OrderProduct.cs",
-              "ToolTip": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\OrderProduct.cs",
-              "RelativeToolTip": "Models\\OrderProduct.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T03:31:42.867Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\Product.cs",
-              "RelativeDocumentMoniker": "Models\\Product.cs",
-              "ToolTip": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\Product.cs",
-              "RelativeToolTip": "Models\\Product.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T03:31:32.852Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Order.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\Order.cs",
-              "RelativeDocumentMoniker": "Models\\Order.cs",
-              "ToolTip": "C:\\Users\\HP\\source\\repos\\Zawdni\\Models\\Order.cs",
-              "RelativeToolTip": "Models\\Order.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T11:28:39.142Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "OrderController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\Zawdni\\Controllers\\OrderController.cs",
-              "RelativeDocumentMoniker": "Controllers\\OrderController.cs",
-              "ToolTip": "C:\\Users\\HP\\source\\repos\\Zawdni\\Controllers\\OrderController.cs*",
-              "RelativeToolTip": "Controllers\\OrderController.cs*",
-              "ViewState": "AgIAAPkAAAAAAAAAAAAiwA8BAABdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-06T04:59:33.17Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

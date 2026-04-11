@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Security.Claims;
 using Zawdni.api.Data;
 using Zawdni.api.Models;
 using Zawdni.Models.DTO;
@@ -18,19 +20,9 @@ namespace Zawdni.Controllers
         {
             _dbcontext = zawdniDbContext;
         }
-        // GET: api/<UserController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        
+       
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<UserController>
         [HttpPost("NewUser")]
@@ -39,25 +31,42 @@ namespace Zawdni.Controllers
             var pass = new PasswordHasher<User>();
 
             var User = new User
-            { Name = userDTO.Name,
-             Password = pass.HashPassword(null,userDTO.Password),
-              Email = userDTO.Email 
+
+            {
+                 Name = userDTO.Name,
+                 Password = pass.HashPassword(null,userDTO.Password),
+                 Email = userDTO.Email 
             };
             _dbcontext.Users.Add(User);
             _dbcontext.SaveChanges();
             return Ok("user"+" "+User.Name+" "+"has been added");
         }
-
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("EditInfo")]
+        public IActionResult EditInfo([FromBody] UserDTO userDTO)
         {
-        }
+            
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+           
+            if (userId == null)
+                return BadRequest("Please Login first");
+            if(int.Parse(userId)!=userDTO.Id)
+                return NotFound("NIGGA THIS NOT UR DATA U CANT EDIT IT");
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var UserInDb = _dbcontext.Users.Find(int.Parse(userId));
+
+            if (UserInDb == null)
+                return Ok("Nothing Changed ");
+
+            UserInDb.Name=userDTO.Name;
+            UserInDb.Email=userDTO.Email;
+            UserInDb.PhoneNumber=userDTO.PhoneNumber;
+            UserInDb.ClinicName=userDTO.ClinicName;
+            UserInDb.ClinicAddress=userDTO.ClinicAddress;
+
+            return Ok(" new Info has been applied");
+
         }
+        
+    
     }
 }
