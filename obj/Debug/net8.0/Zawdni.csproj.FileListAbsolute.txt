@@ -138,7 +138,6 @@ C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\staticwebassets.build.json.cach
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\swae.build.ex.cache
-C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.csproj.Up2Date
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.dll
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\refint\Zawdni.dll
@@ -147,3 +146,4 @@ C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.genruntimeconfig.cache
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\ref\Zawdni.dll
 C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\Zawdni.sourcelink.json
 C:\Users\HP\source\repos\Zawdni\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\HP\source\repos\Zawdni\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

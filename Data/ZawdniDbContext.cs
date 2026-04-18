@@ -34,9 +34,9 @@ namespace Zawdni.api.Data
             // --- إضافة بيانات الـ Seeding هنا ---
 
             // 1. إضافة مستخدمين تجريبيين
-            modelBuilder.Entity<User>().HasData(
+            modelBuilder.Entity<User>().HasData
+                (
                 new User { Id = 1, Name = "bashar", Password = "password123",Email="bashar66629@gmail.com",PhoneNumber="0996400131",Role="Admin",ClinicAddress="inshaat_brazeel",ClinicName="testclinic"}
-               
             );
             base.OnModelCreating(modelBuilder);
         }
